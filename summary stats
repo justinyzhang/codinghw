@@ -1,0 +1,24 @@
+import pandas as pd
+
+# Load the dataset
+df = pd.read_csv("/path/to/prepared_sample.csv")
+
+# Step 1: Basic summary statistics for numeric columns
+summary_stats = df[['lifeexp', 'gdppc_thousands', 'year']].describe()
+print("Summary Statistics Table:")
+print(summary_stats)
+
+# Step 2: Custom summary statistics (mean, std, min, max)
+summary_stats_custom = df[['lifeexp', 'gdppc_thousands', 'year']].agg(['mean', 'std', 'min', 'max'])
+print("Custom Summary Statistics Table:")
+print(summary_stats_custom)
+
+# Step 3: Summary statistics for categorical variable 'lifeexp_category'
+lifeexp_category_counts = df['lifeexp_category'].value_counts()
+print("Life Expectancy Category Counts:")
+print(lifeexp_category_counts)
+
+# Step 4: Save the summary statistics to CSV files
+summary_stats.to_csv("/path/to/summary_statistics.csv")
+summary_stats_custom.to_csv("/path/to/custom_summary_statistics.csv")
+lifeexp_category_counts.to_csv("/path/to/lifeexp_category_counts.csv", header=True)
