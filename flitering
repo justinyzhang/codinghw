@@ -1,0 +1,24 @@
+import pandas as pd
+
+# Load the dataset
+df = pd.read_csv("/path/to/worldbank-lifeexpectancy.csv")
+
+# Step 1: Filter observations to include only years from 2000 onwards
+df_filtered = df[df['year'] >= 2000]
+
+# Step 2: Select relevant columns for analysis
+df_selected = df_filtered[['year', 'countryname', 'lifeexp', 'gdppc']]
+
+# Step 3: Create transformations
+# 3a. Categorize life expectancy as "High" or "Low"
+df_selected['lifeexp_category'] = df_selected['lifeexp'].apply(lambda x: "High" if x > 70 else "Low")
+
+# 3b. Convert GDP per capita to thousands
+df_selected['gdppc_thousands'] = df_selected['gdppc'] / 1000
+
+# Display the prepared data
+print("Prepared Sample for Analysis:")
+print(df_selected.head())
+
+# Step 4: Save the prepared data for analysis
+df_selected.to_csv("/path/to/prepared_sample.csv", index=False)
