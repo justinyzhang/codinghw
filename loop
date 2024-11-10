@@ -1,0 +1,21 @@
+import pandas as pd
+
+# Load the dataset
+df = pd.read_csv("/path/to/worldbank-lifeexpectancy.csv")
+
+# Display the first few rows
+print(df.head())
+
+# List of columns to clean
+columns_to_clean = ['life_expectancy', 'gdp', 'population']
+
+# Fill missing values and convert to numeric
+for column in columns_to_clean:
+    # Fill missing values with the mean of the column
+    df[column].fillna(df[column].mean(), inplace=True)
+    
+    # Convert to numeric, handling any conversion issues
+    df[column] = pd.to_numeric(df[column], errors='coerce')
+
+print("Cleaned DataFrame:")
+print(df[columns_to_clean].head())
