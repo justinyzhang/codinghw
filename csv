@@ -1,0 +1,30 @@
+import pandas as pd
+
+# Load the CSV file
+df = pd.read_csv("/path/to/worldbank-lifeexpectancy.csv")
+
+# Step 1: Convert 'lifeexp', 'population', and 'gdppc' columns to numeric, coerce errors to NaN
+numeric_columns = ['lifeexp', 'population', 'gdppc']
+for column in numeric_columns:
+    df[column] = pd.to_numeric(df[column], errors='coerce')
+
+# Step 2: Fill missing values with the mean for numeric columns
+for column in numeric_columns:
+    df[column].fillna(df[column].mean(), inplace=True)
+
+# Step 3: Strip leading/trailing whitespace in 'countryname' and 'countrycode'
+df['countryname'] = df['countryname'].str.strip()
+df['countrycode'] = df['countrycode'].str.strip()
+
+# Step 4: Remove negative values in 'population' and 'gdppc' by setting them to NaN
+df['population'] = df['population'].apply(lambda x: x if x >= 0 else pd.NA)
+df['gdppc'] = df['gdppc'].apply(lambda x: x if x > 0 else pd.NA)
+
+# Step 5: Drop rows with missing 'year'
+df.dropna(subset=['year'], inplace=True)
+
+# Display the cleaned DataFrame
+print(df.head())
+
+# Save the cleaned DataFrame to a new CSV file
+df.to_csv("/path/to/cleaned_worldbank_lifeexpectancy.csv", index=False)
