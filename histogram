@@ -1,0 +1,18 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Load the dataset
+df = pd.read_csv("/path/to/prepared_sample.csv")
+
+# Create a histogram of life expectancy
+plt.figure(figsize=(8, 6))  # Set the figure size
+plt.hist(df['lifeexp'], bins=15, color='skyblue', edgecolor='black')
+plt.title('Distribution of Life Expectancy')
+plt.xlabel('Life Expectancy')
+plt.ylabel('Frequency')
+
+# Display the histogram
+plt.show()
+
+# Save the histogram as a PNG file
+plt.savefig("output/life_expectancy_histogram.png")
