@@ -3,19 +3,16 @@ import pandas as pd
 # Load the dataset
 df = pd.read_csv("/path/to/worldbank-lifeexpectancy.csv")
 
-# Display the first few rows
+# Define transformations for each column
+transformations = {
+    'lifeexp': lambda x: pd.to_numeric(x, errors='coerce'),       # Convert to numeric, set errors to NaN
+    'gdppc': lambda x: pd.to_numeric(x, errors='coerce') / 1000,  # Convert to numeric and scale to thousands
+    'population': lambda x: x.fillna(x.mean())                    # Fill missing values with mean
+}
+
+# Apply each transformation to the specified column
+for column, func in transformations.items():
+    df[column] = func(df[column])
+
+print("Transformed DataFrame:")
 print(df.head())
-
-# List of columns to clean
-columns_to_clean = ['life_expectancy', 'gdp', 'population']
-
-# Fill missing values and convert to numeric
-for column in columns_to_clean:
-    # Fill missing values with the mean of the column
-    df[column].fillna(df[column].mean(), inplace=True)
-    
-    # Convert to numeric, handling any conversion issues
-    df[column] = pd.to_numeric(df[column], errors='coerce')
-
-print("Cleaned DataFrame:")
-print(df[columns_to_clean].head())
