@@ -1,0 +1,26 @@
+import pandas as pd
+import numpy as np
+
+# Sample dataset
+data = {
+    'life_expectancy': [72.5, None, 68.9, 74.2, None],
+    'gdp': [1_000_000, 2_000_000, 1_500_000, None, 2_200_000],
+    'population': [1000, 1500, -300, 1200, None]
+}
+
+# Create DataFrame
+df = pd.DataFrame(data)
+
+# Define cleaning functions in a dictionary
+cleaning_tasks = {
+    'life_expectancy': lambda x: x.fillna(x.mean()),          # Fill missing values with mean
+    'gdp': lambda x: x / 1000,                                # Scale GDP to thousands
+    'population': lambda x: x.apply(lambda y: y if y >= 0 else np.nan)  # Set negative values to NaN
+}
+
+# Apply each cleaning function to the corresponding column
+for column, func in cleaning_tasks.items():
+    df[column] = func(df[column])
+
+print("Cleaned DataFrame:")
+print(df)
